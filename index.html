@@ -1,161 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valet App Download</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .download-app {
-            position: relative;
-            padding: 50px 0;
-            background-color: #f8f9fa;
-        }
-        .app-det h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        .btn-wrap {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .btn-wrap a {
-            display: inline-block;
-            width: 150px;
-        }
-        .btn-wrap img {
-            max-width: 100%;
-            height: auto;
-        }
-        .floating-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .app-view img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Valet App Download</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    .download-app {
+      position: relative;
+      padding: 50px 0;
+      background-color: #f8f9fa;
+    }
+    .app-det h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .btn-wrap {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .btn-wrap a {
+      display: inline-block;
+      width: 150px;
+    }
+    .btn-wrap img {
+      max-width: 100%;
+      height: auto;
+    }
+    .floating-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .app-view img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
-    <section class="download-app">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="app-det">
-                        <h2>Download Valet App</h2>
-                        <p>this is v1s</p>
-                        <div class="btn-wrap">
-                            <a href="#" id="ios-download">
-                                <img src="/api/placeholder/200/60" alt="App Store" id="app-store-badge">
-                            </a>
-                            <a href="#" id="android-download">
-                                <img src="/api/placeholder/200/60" alt="Google Play" id="play-store-badge">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="app-view">
-                        <img src="/api/placeholder/500/500" alt="App Preview">
-                    </div>
-                </div>
+  <section class="download-app">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="app-det">
+            <h2>Download Valet App</h2>
+            <p>Experience convenient valet services right at your fingertips!</p>
+            <div class="btn-wrap">
+              <a href="#" id="ios-download" rel="noopener noreferrer">
+                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store"/>
+              </a>
+              <a href="#" id="android-download" rel="noopener noreferrer">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play"/>
+              </a>
             </div>
+          </div>
         </div>
-        
-        <button class="floating-btn" onclick="bookNow()">Book Now</button>
-    </section>
+        <div class="col-md-6">
+          <div class="app-view">
+            <img src="/api/placeholder/500/500" alt="App Preview" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="floating-btn" onclick="bookNow()">Book Now</button>
+  </section>
 
-    <script>
-        // App details
-        const BUNDLE_ID = 'com.Valet.valet_customer';
-        const IOS_APP_STORE_LINK = `itms-apps://itunes.apple.com/app/${BUNDLE_ID}`;
-        const ANDROID_PLAY_STORE_LINK = `https://play.google.com/store/apps/details?id=${BUNDLE_ID}`;
-        const ANDROID_DEEP_LINK = `intent://open#Intent;scheme=valet;package=${BUNDLE_ID};end`;
-        const UNIVERSAL_LINK = `https://valetapp.com/open`; // Your universal link if you have one
+  <script>
+    // App configuration
+    const BUNDLE_ID = 'com.Valet.valet_customer';
+    const IOS_APP_STORE_ID = 'YOUR_IOS_APP_ID'; // 🔁 Replace this with your real numeric ID
+    const IOS_APP_STORE_LINK = `itms-apps://itunes.apple.com/app/id${IOS_APP_STORE_ID}`;
+    const ANDROID_PLAY_STORE_LINK = `https://play.google.com/store/apps/details?id=${BUNDLE_ID}`;
+    const ANDROID_DEEP_LINK = `intent://open#Intent;scheme=valet;package=${BUNDLE_ID};end`;
+    const UNIVERSAL_LINK = `https://valetapp.com/open`; // Optional, if deep linking is set up
 
-        // Detect platform
-        function isAndroid() {
-            return /Android/i.test(navigator.userAgent);
+    // Device detection
+    function isAndroid() {
+      return /Android/i.test(navigator.userAgent);
+    }
+
+    function isIOS() {
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    // iOS Download Handler
+    document.getElementById('ios-download').addEventListener('click', function (e) {
+      e.preventDefault();
+
+      if (UNIVERSAL_LINK) {
+        window.location.href = UNIVERSAL_LINK;
+
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.location.href = IOS_APP_STORE_LINK;
+          }
+        }, 500);
+      } else {
+        window.location.href = IOS_APP_STORE_LINK;
+      }
+    });
+
+    // Android Download Handler
+    document.getElementById('android-download').addEventListener('click', function (e) {
+      e.preventDefault();
+
+      window.location.href = ANDROID_DEEP_LINK;
+
+      setTimeout(() => {
+        if (!document.hidden) {
+          window.location.href = ANDROID_PLAY_STORE_LINK;
         }
+      }, 500);
+    });
 
-        function isIOS() {
-            return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        }
-
-        // iOS Download Handler - Improved version
-        document.getElementById('ios-download').addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // First try universal link (if you have one)
-            if (UNIVERSAL_LINK) {
-                window.location.href = UNIVERSAL_LINK;
-                
-                // Set timeout as fallback
-                setTimeout(function() {
-                    if (!document.hidden) {
-                        // If still on page, try App Store
-                        window.location.href = IOS_APP_STORE_LINK;
-                    }
-                }, 500);
-            } else {
-                // Fallback to direct app store link
-                window.location.href = IOS_APP_STORE_LINK;
+    // Book Now Button Handler
+    function bookNow() {
+      if (isAndroid()) {
+        window.location.href = ANDROID_DEEP_LINK;
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.location.href = ANDROID_PLAY_STORE_LINK;
+          }
+        }, 500);
+      } else if (isIOS()) {
+        if (UNIVERSAL_LINK) {
+          window.location.href = UNIVERSAL_LINK;
+          setTimeout(() => {
+            if (!document.hidden) {
+              window.location.href = IOS_APP_STORE_LINK;
             }
-        });
-
-        // Android Download Handler - Improved version
-        document.getElementById('android-download').addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Try to open the app directly
-            window.location.href = ANDROID_DEEP_LINK;
-            
-            // Set timeout as fallback
-            setTimeout(function() {
-                if (!document.hidden) {
-                    // If still on page, try Play Store
-                    window.location.href = ANDROID_PLAY_STORE_LINK;
-                }
-            }, 500);
-        });
-
-        // Book Now Function
-        function bookNow() {
-            // First try to open the app
-            if (isAndroid()) {
-                window.location.href = ANDROID_DEEP_LINK;
-                setTimeout(function() {
-                    if (!document.hidden) {
-                        // If app not installed, redirect to Play Store
-                        window.location.href = ANDROID_PLAY_STORE_LINK;
-                    }
-                }, 500);
-            } else if (isIOS()) {
-                if (UNIVERSAL_LINK) {
-                    window.location.href = UNIVERSAL_LINK;
-                    setTimeout(function() {
-                        if (!document.hidden) {
-                            window.location.href = IOS_APP_STORE_LINK;
-                        }
-                    }, 500);
-                } else {
-                    window.location.href = IOS_APP_STORE_LINK;
-                }
-            } else {
-                // Default web behavior
-                alert('Book Now clicked! Redirecting to booking...');
-                // Add your web booking logic here
-            }
+          }, 500);
+        } else {
+          window.location.href = IOS_APP_STORE_LINK;
         }
-    </script>
+      } else {
+        alert('Book Now clicked! Redirecting to booking...');
+        // Optional: redirect to web booking
+      }
+    }
+  </script>
 </body>
 </html>
