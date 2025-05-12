@@ -16,7 +16,7 @@
           <p id="app-description"></p>
           <div class="btn-wrap">
             <a href="#" id="apple-link">
-              <img src="path-to-appstore-icon.svg" alt="App Store" />
+              <img src="path-to-appstore-icon.svg" alt="App Storev1" />
             </a>
             <a href="#" id="android-link">
               <img src="path-to-playstore-icon.svg" alt="Play Store" />
@@ -54,27 +54,44 @@
   document.getElementById("app-title").textContent = content.app_banner.title;
   document.getElementById("app-description").textContent = content.app_banner.description;
   document.getElementById("app-image").src = BASE_URL + content.app_banner.image.url;
-
   // Apple link
   document.getElementById("apple-link").addEventListener("click", function (e) {
     e.preventDefault();
-    const appleAppLink = "itms-apps://itunes.apple.com/app/com.Valet.valet_customer";
+    const appScheme = "valet://"; // Your app's custom URL scheme
     const appStoreLink = content.app_banner.app_store_link;
-    window.location.href = appleAppLink;
-    setTimeout(() => {
-      window.location.href = appStoreLink;
-    }, 2000);
+    
+    // Try to open the app first
+    const now = Date.now();
+    const timeoutDuration = 1000; // 1 second timeout
+    
+    window.location.href = appScheme;
+    
+    setTimeout(function() {
+      // If we're still here after the timeout, the app probably isn't installed
+      if (Date.now() - now < timeoutDuration + 100) {
+        window.location.href = appStoreLink;
+      }
+    }, timeoutDuration);
   });
 
   // Android link
   document.getElementById("android-link").addEventListener("click", function (e) {
     e.preventDefault();
-    const androidAppLink = "intent://com.Valet.valet_customer#Intent;scheme=valet;package=com.Valet.valet_customer;end";
+    const appPackage = "com.Valet.valet_customer";
     const playStoreLink = content.app_banner.play_store_link;
-    window.location.href = androidAppLink;
-    setTimeout(() => {
+    
+    // Try to open the app using Intent URL
+    window.location.href = `intent://scan/#Intent;scheme=valet;package=${appPackage};end`;
+    
+    // Fallback to Play Store after a short delay if app isn't installed
+    setTimeout(function() {
+      if (document.hidden) {
+        // App was opened successfully
+        return;
+      }
+      // App not installed, redirect to Play Store
       window.location.href = playStoreLink;
-    }, 2000);
+    }, 1000);
   });
 </script>
 
