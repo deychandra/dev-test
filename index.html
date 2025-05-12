@@ -52,7 +52,7 @@
                 <div class="col-md-6">
                     <div class="app-det">
                         <h2>Download Valet App</h2>
-                        <p>Experience convenient valet services right at your fingertips!</p>
+                        <p>this is v1</p>
                         <div class="btn-wrap">
                             <a href="#" id="ios-download">
                                 <img src="/api/placeholder/200/60" alt="App Store" id="app-store-badge">
@@ -79,38 +79,82 @@
         const BUNDLE_ID = 'com.Valet.valet_customer';
         const IOS_APP_STORE_LINK = `itms-apps://itunes.apple.com/app/${BUNDLE_ID}`;
         const ANDROID_PLAY_STORE_LINK = `https://play.google.com/store/apps/details?id=${BUNDLE_ID}`;
-        const ANDROID_DEEP_LINK = `intent://com.Valet.valet_customer#Intent;scheme=valet;package=${BUNDLE_ID};end`;
+        const ANDROID_DEEP_LINK = `intent://open#Intent;scheme=valet;package=${BUNDLE_ID};end`;
+        const UNIVERSAL_LINK = `https://valetapp.com/open`; // Your universal link if you have one
 
-        // iOS Download Handler
+        // Detect platform
+        function isAndroid() {
+            return /Android/i.test(navigator.userAgent);
+        }
+
+        function isIOS() {
+            return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
+        // iOS Download Handler - Improved version
         document.getElementById('ios-download').addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Try to open the app first
-            window.location.href = IOS_APP_STORE_LINK;
-
-            // If app doesn't open, redirect to App Store after 2 seconds
-            setTimeout(() => {
-                window.location.href = `https://apps.apple.com/app/${BUNDLE_ID}`;
-            }, 2000);
+            // First try universal link (if you have one)
+            if (UNIVERSAL_LINK) {
+                window.location.href = UNIVERSAL_LINK;
+                
+                // Set timeout as fallback
+                setTimeout(function() {
+                    if (!document.hidden) {
+                        // If still on page, try App Store
+                        window.location.href = IOS_APP_STORE_LINK;
+                    }
+                }, 500);
+            } else {
+                // Fallback to direct app store link
+                window.location.href = IOS_APP_STORE_LINK;
+            }
         });
 
-        // Android Download Handler
+        // Android Download Handler - Improved version
         document.getElementById('android-download').addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Try to open the app first
+            // Try to open the app directly
             window.location.href = ANDROID_DEEP_LINK;
-
-            // If app doesn't open, redirect to Play Store after 2 seconds
-            setTimeout(() => {
-                window.location.href = ANDROID_PLAY_STORE_LINK;
-            }, 2000);
+            
+            // Set timeout as fallback
+            setTimeout(function() {
+                if (!document.hidden) {
+                    // If still on page, try Play Store
+                    window.location.href = ANDROID_PLAY_STORE_LINK;
+                }
+            }, 500);
         });
 
         // Book Now Function
         function bookNow() {
-            alert('Book Now clicked! Redirecting to booking...');
-            // Add your booking logic here
+            // First try to open the app
+            if (isAndroid()) {
+                window.location.href = ANDROID_DEEP_LINK;
+                setTimeout(function() {
+                    if (!document.hidden) {
+                        // If app not installed, redirect to Play Store
+                        window.location.href = ANDROID_PLAY_STORE_LINK;
+                    }
+                }, 500);
+            } else if (isIOS()) {
+                if (UNIVERSAL_LINK) {
+                    window.location.href = UNIVERSAL_LINK;
+                    setTimeout(function() {
+                        if (!document.hidden) {
+                            window.location.href = IOS_APP_STORE_LINK;
+                        }
+                    }, 500);
+                } else {
+                    window.location.href = IOS_APP_STORE_LINK;
+                }
+            } else {
+                // Default web behavior
+                alert('Book Now clicked! Redirecting to booking...');
+                // Add your web booking logic here
+            }
         }
     </script>
 </body>
