@@ -1,100 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valet App Download</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .download-app {
+            position: relative;
+            padding: 50px 0;
+            background-color: #f8f9fa;
+        }
+        .app-det h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .btn-wrap {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .btn-wrap a {
+            display: inline-block;
+            width: 150px;
+        }
+        .btn-wrap img {
+            max-width: 100%;
+            height: auto;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .app-view img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-  
-<section class="download-app">
-  <div class="container-fluid">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <div class="app-det">
-          <h2 id="app-title"></h2>
-          <p id="app-description"></p>
-          <div class="btn-wrap">
-            <a href="#" id="apple-link">
-              <img src="path-to-appstore-icon.svg" alt="App Storev1" />
-            </a>
-            <a href="#" id="android-link">
-              <img src="path-to-playstore-icon.svg" alt="Play Store" />
-            </a>
-          </div>
+    <section class="download-app">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="app-det">
+                        <h2>Download Valet App</h2>
+                        <p>Experience convenient valet services right at your fingertips!</p>
+                        <div class="btn-wrap">
+                            <a href="#" id="ios-download">
+                                <img src="/api/placeholder/200/60" alt="App Store" id="app-store-badge">
+                            </a>
+                            <a href="#" id="android-download">
+                                <img src="/api/placeholder/200/60" alt="Google Play" id="play-store-badge">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="app-view">
+                        <img src="/api/placeholder/500/500" alt="App Preview">
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="app-view">
-          <img id="app-image" src="" alt="appview" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <button class="floating-btn" onclick="alert('Floating Button Clicked')">Book Now</button>
-</section>
+        
+        <button class="floating-btn" onclick="bookNow()">Book Now</button>
+    </section>
 
-<script>
-  // Simulating content object from React
-  const content = {
-    app_banner: {
-      title: "Download Our App",
-      description: "Get the best valet service experience.",
-      app_store_link: "https://apps.apple.com/app/idXXXXXXXXX",
-      play_store_link: "https://play.google.com/store/apps/details?id=com.Valet.valet_customer",
-      image: {
-        url: "/images/appview.png"
-      }
-    }
-  };
+    <script>
+        // App details
+        const BUNDLE_ID = 'com.Valet.valet_customer';
+        const IOS_APP_STORE_LINK = `itms-apps://itunes.apple.com/app/${BUNDLE_ID}`;
+        const ANDROID_PLAY_STORE_LINK = `https://play.google.com/store/apps/details?id=${BUNDLE_ID}`;
+        const ANDROID_DEEP_LINK = `intent://com.Valet.valet_customer#Intent;scheme=valet;package=${BUNDLE_ID};end`;
 
-  const BASE_URL = "https://yourdomain.com"; // Update this to your actual base URL
+        // iOS Download Handler
+        document.getElementById('ios-download').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Try to open the app first
+            window.location.href = IOS_APP_STORE_LINK;
 
-  // Populate content
-  document.getElementById("app-title").textContent = content.app_banner.title;
-  document.getElementById("app-description").textContent = content.app_banner.description;
-  document.getElementById("app-image").src = BASE_URL + content.app_banner.image.url;
-  // Apple link
-  document.getElementById("apple-link").addEventListener("click", function (e) {
-    e.preventDefault();
-    const appScheme = "valet://"; // Your app's custom URL scheme
-    const appStoreLink = content.app_banner.app_store_link;
-    
-    // Try to open the app first
-    const now = Date.now();
-    const timeoutDuration = 1000; // 1 second timeout
-    
-    window.location.href = appScheme;
-    
-    setTimeout(function() {
-      // If we're still here after the timeout, the app probably isn't installed
-      if (Date.now() - now < timeoutDuration + 100) {
-        window.location.href = appStoreLink;
-      }
-    }, timeoutDuration);
-  });
+            // If app doesn't open, redirect to App Store after 2 seconds
+            setTimeout(() => {
+                window.location.href = `https://apps.apple.com/app/${BUNDLE_ID}`;
+            }, 2000);
+        });
 
-  // Android link
-  document.getElementById("android-link").addEventListener("click", function (e) {
-    e.preventDefault();
-    const appPackage = "com.Valet.valet_customer";
-    const playStoreLink = content.app_banner.play_store_link;
-    
-    // Try to open the app using Intent URL
-    window.location.href = `intent://scan/#Intent;scheme=valet;package=${appPackage};end`;
-    
-    // Fallback to Play Store after a short delay if app isn't installed
-    setTimeout(function() {
-      if (document.hidden) {
-        // App was opened successfully
-        return;
-      }
-      // App not installed, redirect to Play Store
-      window.location.href = playStoreLink;
-    }, 1000);
-  });
-</script>
+        // Android Download Handler
+        document.getElementById('android-download').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Try to open the app first
+            window.location.href = ANDROID_DEEP_LINK;
 
+            // If app doesn't open, redirect to Play Store after 2 seconds
+            setTimeout(() => {
+                window.location.href = ANDROID_PLAY_STORE_LINK;
+            }, 2000);
+        });
 
+        // Book Now Function
+        function bookNow() {
+            alert('Book Now clicked! Redirecting to booking...');
+            // Add your booking logic here
+        }
+    </script>
 </body>
 </html>
